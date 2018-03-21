@@ -15,6 +15,10 @@
     "js",
     "javascript"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ch3sh1r3Cat/vue-i18nt.git"
+  },
   "author": "cheshirecat <ca.leduc@me.com>",
   "license": "MIT"
 }

@@ -1,0 +1,20 @@
+{
+  "name": "vue-i18nt",
+  "version": "0.1.0",
+  "description": "A simple Vue.js i18n directive",
+  "main": "index.js",
+  "devDependencies": {
+    "vue": "2.5.0"
+  },
+  "keywords": [
+    "vue",
+    "vuejs",
+    "i18n",
+    "internationalization",
+    "directive",
+    "js",
+    "javascript"
+  ],
+  "author": "cheshirecat <ca.leduc@me.com>",
+  "license": "MIT"
+}

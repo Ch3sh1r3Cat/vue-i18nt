@@ -24,40 +24,40 @@ You can pass an optional object for default supported locale
 Vue.use(i18n, { default: 'en' })
 ```
 
-Load any locale variable with a json file for translations
+Load any locale variable with a JSON file for translations
 
 ```javascript
 Vue.i18n.add('fr', require('./assets/locale/fr.json'))
 ```
 
-The json must an array of simple objects containing pairs of source / target like:
+The JSON must be an array of simple objects containing pairs of source / target, like:
 
 ```javascript
 ;[
   {
-    source: 'my translated line',
-    target: 'ma ligne de traduction'
+    source: 'Translated into French',
+    target: 'Traduit en français'
   }
 ]
 ```
 
-You can use the directive 'translate' in your html template
+You can use the directive 'translate' in your HTML template
 
 ```javascript
 <template>
   <div>
-    <p>{{ 'my translated line' | translate }}</p>
+    <p>{{ 'Translated into French' | translate }}</p>
   </div>
 </template>
 ```
 
-Or, use the global function this.$i18n.tr in your script
+Or, use the instance methods 'this.$i18n.tr' in your Vue script
 
 ```javascript
 ...
-var myTr = this.$i18n.tr('my translated line')
+var myTr = this.$i18n.tr('Translated into French')
 console.log('Translating: ' + myTr)
-// Translating: ma ligne de traduction
+// Translating: Traduit en français
 ...
 ```
 

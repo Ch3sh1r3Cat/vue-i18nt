@@ -1,6 +1,6 @@
 # :globe_with_meridians: vue-i18nt
 
-A simple internationalization plugin for Vue.js
+A lightweight internationalization plugin for Vue.js
 
 ## Installation
 

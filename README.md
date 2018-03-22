@@ -41,7 +41,7 @@ The JSON must be an array of simple objects containing pairs of source / target,
 ]
 ```
 
-You can use the directive 'translate' in your HTML template
+You can use the filter 'translate' in your HTML template
 
 ```javascript
 <template>

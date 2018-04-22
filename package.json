@@ -1,7 +1,7 @@
 {
   "name": "vue-i18nt",
-  "version": "0.1.1",
-  "description": "A simple Vue.js i18n directive",
+  "version": "0.1.2",
+  "description": "A lightweight internationalization plugin for Vue.js",
   "main": "index.js",
   "scripts": {
     "babel": "npx babel script.js --out-file index.js"
@@ -9,8 +9,7 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.6.1",
-    "babel-preset-stage-2": "^6.24.1",
-    "vue": "2.5.0"
+    "babel-preset-stage-2": "^6.24.1"
   },
   "keywords": [
     "vue",
@@ -26,5 +25,5 @@
     "url": "https://github.com/Ch3sh1r3Cat/vue-i18nt.git"
   },
   "author": "cheshirecat <ca.leduc@me.com>",
-  "license": "MIT"
+  "license": "ISC"
 }

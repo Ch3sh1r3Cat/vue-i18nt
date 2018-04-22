@@ -1,23 +1,25 @@
 /**
- * @license
- * Copyright (c) 2018 Charles-André LEDUC. All rights reserved.
+ * A lightweight internationalization plugin for Vue.js
+ *
+ * @version 0.1.2
+ * @author Charlie LEDUC <contact@graphique.io>
+ * @license ISC
+ * @requires 'vue'
  */
 
-const i18n = {
+export default {
   install(Vue, options) {
-    const localeKey = 'locale'
-    var translations = {}
+    const _localeKey = 'locale'
+    var _translations = {}
 
     var supportedLocales = ['en']
-    if (options) {
-      if (options.default) {
-        supportedLocales = [options.default]
-      }
+    if (options && options.default) {
+      supportedLocales = [options.default]
     }
 
-    const translate = function(source) {
-      const locale = getLocale()
-      const translation = translations[locale]
+    var translate = function(source, locale) {
+      var lang = locale ? locale : getLocale()
+      const translation = _translations[lang]
       if (translation != null) {
         for (var index in translation) {
           var element = translation[index]
@@ -29,14 +31,14 @@ const i18n = {
       return source
     }
 
-    const addTranslation = function(lang, translation) {
+    var addTranslation = function(lang, translation) {
       supportedLocales.push(lang)
-      translations[lang] = translation
+      _translations[lang] = translation
     }
 
-    const getLocale = function() {
-      if (localStorage.getItem(localeKey)) {
-        var storage = localStorage.getItem(localeKey)
+    var getLocale = function() {
+      if (localStorage.getItem(_localeKey)) {
+        var storage = localStorage.getItem(_localeKey)
         if (storage.length > 2) {
           storage = storage.substr(0, 2)
         }
@@ -51,16 +53,16 @@ const i18n = {
       }
 
       if (supportedLocales.indexOf(language) > -1) {
-        localStorage.setItem(localeKey, language)
+        localStorage.setItem(_localeKey, language)
         return language
       }
 
-      localStorage.setItem(localeKey, defaultLang)
+      localStorage.setItem(_localeKey, defaultLang)
       return language
     }
 
-    const setLocale = function(locale) {
-      localStorage.setItem(localeKey, locale)
+    var setLocale = function(locale) {
+      localStorage.setItem(_localeKey, locale)
     }
 
     Vue.i18n = {
@@ -76,5 +78,3 @@ const i18n = {
     Vue.filter('translate', translate)
   }
 }
-
-export default i18n

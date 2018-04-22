@@ -63,4 +63,4 @@ console.log('Translating: ' + myTr)
 
 ## License
 
-[MIT](http://opensource.org/licenses/MIT)
+[ISC](https://opensource.org/licenses/ISC)

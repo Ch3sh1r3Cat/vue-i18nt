@@ -1,7 +1,7 @@
 /**
  * A lightweight internationalization plugin for Vue.js
  *
- * @version 0.1.2
+ * @version 0.2.1
  * @author Charlie LEDUC <contact@graphique.io>
  * @license ISC
  * @requires 'vue'
@@ -20,11 +20,11 @@ export default {
     var translate = function(source, locale) {
       var lang = locale ? locale : getLocale()
       const translation = _translations[lang]
-      if (translation != null) {
-        for (var index in translation) {
-          var element = translation[index]
-          if (element.source === source) {
-            return element.target
+      if (translation) {
+        for (var i = 0; i < translation.length; i++) {
+          var element = translation[i];
+          if (element.input === source) {
+            return element.output;
           }
         }
       }

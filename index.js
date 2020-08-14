@@ -1,16 +1,17 @@
 /**
  * A lightweight internationalization plugin for Vue.js
  *
- * @version 0.2.1
+ * @version 0.3.1
  * @author Charlie LEDUC <contact@graphique.io>
  * @license ISC
  * @requires 'vue'
  */
 
+var __translations = {};
+
 export default {
   install: function install(Vue, options) {
     var _localeKey = 'locale';
-    var _translations = {};
 
     var supportedLocales = ['en'];
     if (options && options.default) {
@@ -19,7 +20,7 @@ export default {
 
     var translate = function translate(source, locale) {
       var lang = locale ? locale : getLocale();
-      var translation = _translations[lang];
+      var translation = __translations[lang];
       if (translation) {
         for (var i = 0; i < translation.length; i++) {
           var element = translation[i];
@@ -33,7 +34,7 @@ export default {
 
     var addTranslation = function addTranslation(lang, translation) {
       supportedLocales.push(lang);
-      _translations[lang] = translation;
+      __translations[lang] = translation;
     };
 
     var getLocale = function getLocale() {
@@ -42,7 +43,9 @@ export default {
         if (storage.length > 2) {
           storage = storage.substr(0, 2);
         }
-        return storage;
+        if (supportedLocales.indexOf(storage) > -1) {
+          return storage;
+        }
       }
 
       var defaultLang = supportedLocales[0];
@@ -67,6 +70,7 @@ export default {
 
     Vue.i18n = {
       add: addTranslation,
+      tr: translate,
       getLocale: getLocale,
       setLocale: setLocale
     };

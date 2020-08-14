@@ -66,13 +66,15 @@ export default {
     };
 
     Vue.i18n = {
-      setLocale: setLocale,
-      add: addTranslation
+      add: addTranslation,
+      getLocale: getLocale,
+      setLocale: setLocale
     };
 
     Vue.prototype.$i18n = {
       tr: translate,
-      getLocale: getLocale
+      getLocale: getLocale,
+      setLocale: setLocale
     };
 
     Vue.filter('translate', translate);

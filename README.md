@@ -1,4 +1,4 @@
-# :globe_with_meridians: vue-i18nt
+# vue-i18nt
 
 A lightweight internationalization plugin for Vue.js
 
@@ -13,52 +13,157 @@ npm install vue-i18nt --save
 Default use in your main.js Vue project
 
 ```javascript
-import i18n from 'vue-i18nt'
-
-Vue.use(i18n)
+import { plugin as i18nt } from 'vue-i18nt'
+...
+createApp(App)
+  .use(i18nt)
+...
 ```
 
-You can pass an optional object for default supported locale
+You can pass an optional object for options
 
 ```javascript
-Vue.use(i18n, { default: 'en' })
+createApp(App)
+  .use(i18nt, {
+    default: 'en', // force default locale to 'en'
+    locales: {
+      en: require('./assets/locales/en.json'),
+      fr: require('./assets/locales/fr.json')
+    }
+  })
 ```
 
-Load any locale variable with a JSON file for translations
+The JSON files consist of key-value pairs where the key is the first argument passed to the main translation function, like:
 
 ```javascript
-Vue.i18n.add('fr', require('./assets/locale/fr.json'))
+/* json */
+{
+  "msg1": "Message traduit en français",
+  "msg2": "Ceci est un autre message",
+  "greetings": "Ceci est un autre message"
+}
 ```
 
-The JSON must be an array of simple objects containing pairs of source / target, like:
+## Basic usage
 
-```javascript
-;[
-  {
-    source: 'Translated into French',
-    target: 'Traduit en français'
-  }
-]
-```
-
-You can use the filter 'translate' in your HTML template
+You can use the $tr translation function injected with the i18nt plugin to localize texts in the HTML template Vue file
 
 ```javascript
 <template>
   <div>
-    <p>{{ 'Translated into French' | translate }}</p>
+    <p>{{ $t('msg1') }}</p>
   </div>
 </template>
 ```
 
-Or, use the instance methods 'this.$i18n.tr' in your Vue script
+The result would be translated in the browser:
+
+```html
+<div>
+  <p>Message traduit en français</p>
+</div>
+```
+
+## Advanced usage
+
+You can pass an optional object with the following properties:
+- `locale`: to translate to the locale parameter
+- `tokens`: an array to replace the %s token with the indexed string
+- `count`: a Number to output a specific translated count
+
+### Interpolation
+
+The i18nt plugin supports string interpolation, with `%s` as placeholder in your translation files
 
 ```javascript
-...
-var myTr = this.$i18n.tr('Translated into French')
-console.log('Translating: ' + myTr)
-// Translating: Traduit en français
-...
+<template>
+  <div>
+    <p>{{ $t('greetings', { locale: 'en', tokens: ['Vue'] }) }}</p>
+  </div>
+</template>
+```
+
+```javascript
+/* json */
+{
+  "greetings": "Hello %s !"
+}
+```
+
+It would be rendered in the browser:
+
+```html
+<div>
+  <p>Hello Vue !</p>
+</div>
+```
+
+### Pluralization
+
+The i18nt plugin also supports pluralization, with `|` as a separator for none / one / many elements
+
+```javascript
+<template>
+  <div>
+    <p>{{ $t('crows', { count: 0 }) }}</p>
+    <p>{{ $t('crows', { count: 1 }) }}</p>
+    <p>{{ $t('crows', { count: 4 }) }}</p>
+  </div>
+</template>
+```
+
+```javascript
+{
+  "crows": "None | A crow | Murder of Crows"
+}
+```
+
+As a result:
+
+```html
+<div>
+  <p>None</p>
+  <p>A crow</p>
+  <p>Murder of Crows</p>
+</div>
+```
+
+## Provide / Inject
+
+Plugin users will now be able to `inject['i18n']` into their components to access the i18n object with the following methods:
+- `getLocale`: to access the global locale variable
+- `setLocale`: to set the global locale variable
+
+```javascript
+export default {
+  name: 'MyComponent',
+
+  inject: ['i18n'],
+
+  computed: {
+    locale() {
+      return this.i18n.getLocale()
+    }
+  },
+
+  methods: {
+    changeLanguage(lang) {
+      this.i18n.setLocale(lang)
+    }
+  }
+}
+```
+
+## Import
+
+You can also import the `tr` from the exported module to use as a stand-alone function in other javascript files
+
+```javascript
+import { tr } from 'vue-i18nt'
+
+var text = tr('msg2')
+console.log('msg2 =>', text)
+// msg2 => Ceci est un autre message
 ```
 
 ## License

@@ -1,85 +1,96 @@
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 /**
  * A lightweight internationalization plugin for Vue.js
  *
- * @version 0.3.1
+ * @version 3.0.0
  * @author Charlie LEDUC <contact@graphique.io>
  * @license ISC
  * @requires 'vue'
  */
 
-var _localeKey = 'locale';
-var __translations = {};
-var __supportedLocales = ['en'];
+var _LOCALEKEY_ = 'locale';
+var _TRANSLATIONS_ = {};
+var _SUPPORTED_LOCALES_ = ['en'];
 
-function __getLocale() {
-  if (localStorage.getItem(_localeKey)) {
-    var storage = localStorage.getItem(_localeKey);
-    if (storage.length > 2) {
-      storage = storage.substr(0, 2);
-    }
-    if (__supportedLocales.indexOf(storage) > -1) {
-      return storage;
-    }
-  }
-
-  var defaultLang = __supportedLocales[0];
-
-  var language = window.navigator.language || defaultLang;
-  if (language.length > 2) {
-    language = language.substr(0, 2);
-  }
-
-  if (__supportedLocales.indexOf(language) > -1) {
-    localStorage.setItem(_localeKey, language);
-    return language;
-  }
-
-  localStorage.setItem(_localeKey, defaultLang);
-  return language;
+function _has(object, key) {
+  return Object.prototype.hasOwnProperty.call(object, key);
 }
 
-function __setLocale(locale) {
-  localStorage.setItem(_localeKey, locale);
+function _getLocale() {
+  var defaultLocale = 'en';
+  var storageLocale = localStorage.getItem(_LOCALEKEY_);
+
+  var locale = storageLocale || window.navigator.language || defaultLocale;
+  if (locale.length > 2) {
+    locale = locale.substr(0, 2);
+  }
+
+  if (_SUPPORTED_LOCALES_.indexOf(locale) > -1) {
+    localStorage.setItem(_LOCALEKEY_, locale);
+    return locale;
+  }
+
+  localStorage.setItem(_LOCALEKEY_, defaultLocale);
+  return defaultLocale;
 }
 
-function __addTranslation(lang, translation) {
-  __supportedLocales.push(lang);
-  __translations[lang] = translation;
+function _setLocale(locale) {
+  localStorage.removeItem(_LOCALEKEY_);
+  if (typeof locale === 'string' && locale.length) {
+    localStorage.setItem(_LOCALEKEY_, locale);
+  }
 }
 
-function __translate(source, locale) {
-  var lang = locale ? locale : __getLocale();
-  var translation = __translations[lang];
-  if (translation) {
-    for (var i = 0; i < translation.length; i++) {
-      var element = translation[i];
-      if (element.input === source) {
-        return element.output;
+function _addTranslation(locale, translation) {
+  if (typeof locale === 'string' && locale.length) {
+    _SUPPORTED_LOCALES_.push(locale);
+    _TRANSLATIONS_[locale] = translation;
+  }
+}
+
+function _translate(message, args) {
+  if (!args || (typeof args === 'undefined' ? 'undefined' : _typeof(args)) !== 'object') args = {};
+  var locale = args.locale ? args.locale : _getLocale();
+  if (_has(_TRANSLATIONS_, locale)) {
+    var translation = _TRANSLATIONS_[locale];
+    if (_has(translation, message)) {
+      var tokens = args.tokens ? args.tokens || [] : [];
+      var output = translation[message];
+      for (var i = 0; i < tokens.length; i++) {
+        output = output.replace(/%s/, tokens[i]);
       }
+      if (output.indexOf('|') > 0) {
+        var count = args.count ? args.count : 0;
+        var parts = output.split('|');
+        if (parts.length) {
+          return count < parts.length ? parts[count].trim() : parts[parts.length - 1].trim();
+        }
+      }
+      return output;
     }
   }
-  return source;
+  return message;
 }
 
-export default {
-  install: function install(Vue, options) {
-    if (options && options.default) {
-      __supportedLocales = [options.default];
+var _i18n = {
+  getLocale: _getLocale,
+  setLocale: _setLocale
+};
+
+var _plugin = {
+  install: function install(app, options) {
+    app.provide('i18n', _i18n);
+    if (!options || (typeof options === 'undefined' ? 'undefined' : _typeof(options)) !== 'object') options = {};
+    var locales = options.locales || {};
+    for (var key in locales) {
+      _addTranslation(key, locales[key]);
     }
-
-    Vue.i18n = {
-      add: __addTranslation,
-      tr: __translate,
-      getLocale: __getLocale,
-      setLocale: __setLocale
-    };
-
-    Vue.prototype.$i18n = {
-      tr: __translate,
-      getLocale: __getLocale,
-      setLocale: __setLocale
-    };
-
-    Vue.filter('translate', __translate);
+    if (_has(options, 'default')) {
+      _setLocale(options.default);
+    }
+    app.config.globalProperties.$tr = _translate;
   }
 };
+
+export { _translate as tr, _i18n as i18n, _plugin as plugin };

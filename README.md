@@ -1,6 +1,6 @@
 # vue-i18nt
 
-A lightweight internationalization plugin for Vue.js
+A lightweight internationalization plugin for Vue.js with Typescript support
 
 ## Installation
 
@@ -12,11 +12,11 @@ npm install vue-i18nt --save
 
 Default use in your main.js Vue project
 
-```javascript
-import { plugin as i18nt } from 'vue-i18nt'
+```typescript
+import * as i18nt from 'vue-i18nt'
 ...
 createApp(App)
-  .use(i18nt)
+  .use(i18nt.plugin)
 ...
 ```
 
@@ -24,7 +24,7 @@ You can pass an optional object for options
 
 ```javascript
 createApp(App)
-  .use(i18nt, {
+  .use(i18nt.plugin, {
     default: 'en', // force default locale to 'en'
     locales: {
       en: require('./assets/locales/en.json'),
@@ -40,7 +40,7 @@ The JSON files consist of key-value pairs where the key is the first argument pa
 {
   "msg1": "Message traduit en français",
   "msg2": "Ceci est un autre message",
-  "greetings": "Ceci est un autre message"
+  "greetings": "Bonjour!"
 }
 ```
 

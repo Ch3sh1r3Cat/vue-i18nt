@@ -16,13 +16,14 @@ export interface i18nParameters {
     locale: string;
     tokens?: string[];
     count?: number;
+    reversed: boolean;
 }
 export interface i18nOptions {
     default: string;
     locales: i18nTranslation;
 }
 declare function _getLocale(): string;
-declare function _setLocale(locale: string): void;
+declare function _setLocale(locale?: string | null): void;
 declare function _translate(message: string, params?: i18nParameters): string;
 declare const _i18n: {
     getLocale: typeof _getLocale;

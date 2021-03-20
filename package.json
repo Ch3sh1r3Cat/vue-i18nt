@@ -1,6 +1,6 @@
 {
   "name": "vue-i18nt",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "description": "A lightweight internationalization plugin for Vue.js",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -9,7 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
-    "typescript": "^4.1.2"
+    "typescript": "^4.2.3"
   },
   "keywords": [
     "vue",

@@ -51,7 +51,7 @@ You can use the $tr translation function injected with the i18nt plugin to local
 ```javascript
 <template>
   <div>
-    <p>{{ $t('msg1') }}</p>
+    <p>{{ $tr('msg1') }}</p>
   </div>
 </template>
 ```
@@ -78,7 +78,7 @@ The i18nt plugin supports string interpolation, with `%s` as placeholder in your
 ```javascript
 <template>
   <div>
-    <p>{{ $t('greetings', { locale: 'en', tokens: ['Vue'] }) }}</p>
+    <p>{{ $tr('greetings', { locale: 'en', tokens: ['Vue'] }) }}</p>
   </div>
 </template>
 ```
@@ -102,13 +102,13 @@ It would be rendered in the browser:
 
 The i18nt plugin also supports pluralization, with `|` as a separator for none / one / many elements
 
-```javascript
+```html
 <template>
-  <div>
-    <p>{{ $t('crows', { count: 0 }) }}</p>
-    <p>{{ $t('crows', { count: 1 }) }}</p>
-    <p>{{ $t('crows', { count: 4 }) }}</p>
-  </div>
+  <select>
+    <option value="0">{{ $tr('crows', { count: 0 }) }}</option>
+    <option value="1">{{ $tr('crows', { count: 1 }) }}</option>
+    <option value="10">{{ $tr('crows', { count: 10 }) }}</option>
+  </select>
 </template>
 ```
 
@@ -121,11 +121,11 @@ The i18nt plugin also supports pluralization, with `|` as a separator for none /
 As a result:
 
 ```html
-<div>
-  <p>None</p>
-  <p>A crow</p>
-  <p>Murder of Crows</p>
-</div>
+<select>
+  <option value="0">None</option>
+  <option value="1">A crow</option>
+  <option value="10">Murder of Crows</option>
+</select>
 ```
 
 ## Provide / Inject

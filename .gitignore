@@ -12,3 +12,5 @@ script.js
 *.ntvs*
 *.njsproj
 *.sln
+*-lock*
+.prettier*
